@@ -15,27 +15,29 @@ class LivroController extends Controller
 
     public function store(Request $request)
     {
-        $livro = Livro::create([
-            'titulo' => $request['titulo'],
-            'autor' => $request['autor'],
-            'data_publicacao' => $request['data_publicacao']
+        $data = $request->validate([
+            'titulo' => 'required|string|max:150',
+            'autor' => 'required|string|max:255',
+            'data_publicacao' => 'required|date',
         ]);
-        return response()->json($livro);
+        $livro = Livro::create($data);
+        return $this->success($livro, 'Livro cadastrado com sucesso!',201);
     }
 
     public function update(REQUEST $request, Livro $livro)
     {
-        $livro->update([
-            'titulo' => $request['titulo'],
-            'autor' => $request['autor'],
-            'data_publicacao' => $request['data_publicacao']
+        $data = $request->validate([
+            'titulo' => 'required|string|max:150',
+            'autor' => 'required|string|max:255',
+            'data_publicacao' => 'required|date',
         ]);
-        return response()->json($livro);
+        $livro = Livro::update($data);
+        return $this->success($livro, 'Livro alterado com sucesso!');
     }
 
     public function destroy(Livro $livro)
     {
         $livro->delete();
-        return response()->json($livro);
+        return $this->success(null, 'Livro deletado com sucesso!');
     }
 }

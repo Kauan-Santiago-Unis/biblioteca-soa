@@ -15,25 +15,27 @@ class CategoriaController extends Controller
 
     public function store(Request $request)
     {
-        $categoria = Categoria::create([
-            'nome' => $request['nome'],
-            'descricao' => $request['descricao']
+        $data = $request->validate([
+            'nome' => 'required|string|max:150',
+            'descricao' => 'required|string|max:255',
         ]);
-        return response()->json($categoria);
+        $categoria = Categoria::create($data);
+        return $this->success($categoria, 'Categoria cadastrada com sucesso!', 201);
     }
 
     public function update(Request $request, Categoria $categoria)
     {
-        $categoria->update([
-            'nome' => $request['nome'],
-            'descricao' => $request['descricao']
+        $data = $request->validate([
+            'nome' => 'required|string|max:150',
+            'descricao' => 'required|string|max:255',
         ]);
-        return response()->json($categoria);
+        $categoria->update($data);
+        return $this->success($categoria, 'Categoria alterada com sucesso!');
     }
 
     public function destroy(Categoria $categoria)
     {
         $categoria->delete();
-        return response()->json($categoria);
+        return $this->success(null, 'Categoria removida com sucesso!');
     }
 }

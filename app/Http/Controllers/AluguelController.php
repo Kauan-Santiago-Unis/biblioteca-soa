@@ -15,31 +15,33 @@ class AluguelController extends Controller
 
     public function store(Request $request)
     {
-        $alugueis = Aluguel::create([
-            'user_id' => $request['user_id'],
-            'livro_id' => $request['livro_id'],
-            'data_aluguel' => $request['data_aluguel'],
-            'data_devolucao_prevista' => $request['data_devolucao_prevista'],
-            'data_devolucao_real' => $request['data_devolucao_real']
+        $data = $request->validate([
+            'user_id' => 'required|integer|min:0',
+            'livro_id' => 'required|integer|min:0',
+            'data_aluguel' => 'required|date',
+            'data_devolucao_prevista' => 'required|date',
+            'data_devolucao_real' => 'required|date',
         ]);
-        return response()->json($alugueis);
+        $alugueis = Aluguel::create($data);
+        return $this->success($alugueis, 'Aluguel cadastrado com sucesso!', 201);
     }
 
     public function  update(Request $request, Aluguel $alugueis)
     {
-        $alugueis->update([
-            'user_id' => $request['user_id'],
-            'livro_id' => $request['livro_id'],
-            'data_aluguel' => $request['data_aluguel'],
-            'data_devolucao_prevista' => $request['data_devolucao_prevista'],
-            'data_devolucao_real' => $request['data_devolucao_real']
+        $data = $request->validate([
+            'user_id' => 'required|integer|min:1',
+            'livro_id' => 'required|integer|min:1',
+            'data_aluguel' => 'required|date',
+            'data_devolucao_prevista' => 'required|date',
+            'data_devolucao_real' => 'required|date',
         ]);
-        return response()->json($alugueis);
+        $alugueis = Aluguel::update($data);
+        return $this->success($alugueis, 'Aluguel alterado com sucesso!');
     }
 
     public function destroy(Aluguel $alugueis)
     {
         $alugueis->delete();
-        return response()->json($alugueis);
+        return $this->success(null, 'Aluguel deletado com sucesso!');
     }
 }

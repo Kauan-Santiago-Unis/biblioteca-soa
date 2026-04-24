@@ -16,27 +16,29 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password'])
+        $data = $request->validate([
+            'name' => 'required|string|max:150',
+            'email' => 'required|string|max:50',
+            'password' => 'required|string|max:50',
         ]);
-        return response()->json($user);
+        $user = User::create($data);
+        return $this->success($user, 'Usuario cadastrado com sucesso!', 201);
     }
 
     public function update(Request $request, User $user)
     {
-        $user->update([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password'])
+        $data = $request->validate([
+            'name' => 'required|string|max:150',
+            'email' => 'required|string|max:50',
+            'password' => 'required|string|max:50',
         ]);
-        return response()->json($user);
+        $user = User::update($data);
+        return $this->success($user, 'Usuario alterado com sucesso!');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json($user);
+        return $this->success(null, 'Usuario removido com sucesso!');
     }
 }

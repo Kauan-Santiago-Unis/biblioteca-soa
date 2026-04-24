@@ -30,3 +30,8 @@ Route::get('/alugueis', [AluguelController::class, 'index']);
 Route::post('/alugueis', [AluguelController::class, 'store']);
 Route::put('/alugueis/{aluguel}', [AluguelController::class, 'update']);
 Route::delete('/alugueis/{aluguel}', [AluguelController::class, 'destroy']);
+
+Route::get('/categorias-livros', [CategoriaController::class, 'index']);
+Route::post('/categorias-livros', [CategoriaController::class, 'store']);
+Route::put('/categorias-livros/{categoria-livro}', [CategoriaController::class, 'update']);
+Route::delete('/categorias-livros/{categoria-livro}', [CategoriaController::class, 'destroy']);

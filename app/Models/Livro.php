@@ -22,4 +22,6 @@ class Livro extends Model
     {
         return $this->belongsToMany(Categoria::class, 'categoria_livro', 'livro_id', 'categoria_id');
     }
+
+
 }
