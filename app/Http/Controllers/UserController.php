@@ -23,10 +23,9 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:150',
-            'email' => 'required|string|max:50|unique:users,email',
-            'password' => 'required|string|min:6|max:50',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:6|max:255',
         ]);
-        $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
         return $this->success($user, 'Usuario cadastrado com sucesso!', 201);
     }
@@ -38,7 +37,6 @@ class UserController extends Controller
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'password' => 'required|string|min:6|max:255',
         ]);
-        $data['password'] = Hash::make($data['password']);
         $user->update($data);
         return $this->success($user, 'Usuario alterado com sucesso!');
     }
