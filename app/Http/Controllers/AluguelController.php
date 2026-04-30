@@ -29,11 +29,11 @@ class AluguelController extends Controller
             'data_devolucao_prevista' => 'required|date|after_or_equal:data_aluguel',
             'data_devolucao_real' => 'nullable|date|after_or_equal:data_aluguel',
         ]);
-        $alugueis = Aluguel::create($data);
-        return $this->success($alugueis, 'Aluguel cadastrado com sucesso!', 201);
+        $aluguel = Aluguel::create($data);
+        return $this->success($aluguel, 'Aluguel cadastrado com sucesso!', 201);
     }
 
-    public function  update(Request $request, Aluguel $alugueis)
+    public function update(Request $request, Aluguel $aluguel)
     {
         $data = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
@@ -42,13 +42,13 @@ class AluguelController extends Controller
             'data_devolucao_prevista' => 'required|date|after_or_equal:data_aluguel',
             'data_devolucao_real' => 'nullable|date|after_or_equal:data_aluguel',
         ]);
-        $alugueis->update($data);
-        return $this->success($alugueis, 'Aluguel alterado com sucesso!');
+        $aluguel->update($data);
+        return $this->success($aluguel, 'Aluguel alterado com sucesso!');
     }
 
-    public function destroy(Aluguel $alugueis)
+    public function destroy(Aluguel $aluguel)
     {
-        $alugueis->delete();
+        $aluguel->delete();
         return $this->success(null, 'Aluguel deletado com sucesso!');
     }
 }

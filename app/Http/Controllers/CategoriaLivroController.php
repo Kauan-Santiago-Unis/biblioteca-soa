@@ -10,13 +10,13 @@ class CategoriaLivroController extends Controller
     public function index()
     {
         $categoriasLivros = CategoriaLivro::with(['categoria', 'livro'])->get();
-        return $this->success($categoriasLivros, 'Relacionamentos listados com sucesso!');
+        return $this->success($categoriasLivros, 'Categorias de Livros listadas com sucesso!');
     }
 
     public function show(CategoriaLivro $categoriaLivro)
     {
         $categoriaLivro->load(['categoria', 'livro']);
-        return $this->success($categoriaLivro, 'Relacionamento encontrado com sucesso!');
+        return $this->success($categoriaLivro, 'Categoria de Livro encontrada com sucesso!');
     }
 
     public function store(Request $request)
@@ -26,7 +26,7 @@ class CategoriaLivroController extends Controller
             'livro_id' => 'required|integer|exists:livros,id',
         ]);
         $categoriaLivro = CategoriaLivro::create($data);
-        return $this->success($categoriaLivro, 'Categoria cadastrada com sucesso!', 201);
+        return $this->success($categoriaLivro, 'Categoria de Livro cadastrada com sucesso!', 201);
     }
 
     public function update(Request $request, CategoriaLivro $categoriaLivro)
@@ -36,12 +36,12 @@ class CategoriaLivroController extends Controller
             'livro_id' => 'required|integer|exists:livros,id',
         ]);
         $categoriaLivro->update($data);
-        return $this->success($categoriaLivro, 'Categoria alterada com sucesso!');
+        return $this->success($categoriaLivro, 'Categoria de Livro alterada com sucesso!');
     }
 
     public function destroy(CategoriaLivro $categoriaLivro)
     {
         $categoriaLivro->delete();
-        return $this->success(null, 'Categoria removida com sucesso!');
+        return $this->success(null, 'Categoria de Livro removida com sucesso!');
     }
 }
