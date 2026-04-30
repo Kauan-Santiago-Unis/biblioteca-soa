@@ -9,8 +9,14 @@ class LivroController extends Controller
 {
     public function index()
     {
-        $livros = Livro::all();
-        return response()->json($livros);
+        $livros = Livro::with('categorias')->get();
+        return $this->success($livros, 'Livros listados com sucesso!');
+    }
+
+    public function show(Livro $livro)
+    {
+        $livro->load(['categorias', 'alugueis']);
+        return $this->success($livro, 'Livro encontrado com sucesso!');
     }
 
     public function store(Request $request)
@@ -24,14 +30,14 @@ class LivroController extends Controller
         return $this->success($livro, 'Livro cadastrado com sucesso!',201);
     }
 
-    public function update(REQUEST $request, Livro $livro)
+    public function update(Request $request, Livro $livro)
     {
         $data = $request->validate([
             'titulo' => 'required|string|max:150',
             'autor' => 'required|string|max:255',
             'data_publicacao' => 'required|date',
         ]);
-        $livro = Livro::update($data);
+        $livro->update($data);
         return $this->success($livro, 'Livro alterado com sucesso!');
     }
 

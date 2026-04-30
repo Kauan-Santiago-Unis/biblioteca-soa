@@ -9,15 +9,21 @@ class CategoriaLivroController extends Controller
 {
     public function index()
     {
-        $categorias = CategoriaLivro::all();
-        return response()->json($categorias);
+        $categoriasLivros = CategoriaLivro::with(['categoria', 'livro'])->get();
+        return $this->success($categoriasLivros, 'Relacionamentos listados com sucesso!');
+    }
+
+    public function show(CategoriaLivro $categoriaLivro)
+    {
+        $categoriaLivro->load(['categoria', 'livro']);
+        return $this->success($categoriaLivro, 'Relacionamento encontrado com sucesso!');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer|min:1',
-            'livro_id' => 'required|integer|min:1',
+            'categoria_id' => 'required|integer|exists:categorias,id',
+            'livro_id' => 'required|integer|exists:livros,id',
         ]);
         $categoriaLivro = CategoriaLivro::create($data);
         return $this->success($categoriaLivro, 'Categoria cadastrada com sucesso!', 201);
@@ -26,10 +32,10 @@ class CategoriaLivroController extends Controller
     public function update(Request $request, CategoriaLivro $categoriaLivro)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer|min:1',
-            'livro_id' => 'required|integer|min:1',
+            'categoria_id' => 'required|integer|exists:categorias,id',
+            'livro_id' => 'required|integer|exists:livros,id',
         ]);
-        $categoriaLivro = CategoriaLivro::create($data);
+        $categoriaLivro->update($data);
         return $this->success($categoriaLivro, 'Categoria alterada com sucesso!');
     }
 

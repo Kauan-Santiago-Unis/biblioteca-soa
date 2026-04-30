@@ -9,8 +9,14 @@ class CategoriaController extends Controller
 {
     public function index()
     {
-        $categorias = Categoria::all();
-        return response()->json($categorias);
+        $categorias = Categoria::with('livros')->get();
+        return $this->success($categorias, 'Categorias listadas com sucesso!');
+    }
+
+    public function show(Categoria $categoria)
+    {
+        $categoria->load('livros');
+        return $this->success($categoria, 'Categoria encontrada com sucesso!');
     }
 
     public function store(Request $request)

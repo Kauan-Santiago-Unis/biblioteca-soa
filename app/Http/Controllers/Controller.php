@@ -11,4 +11,12 @@ abstract class Controller
             'data' => $data
         ], $status);
     }
+
+    protected function error(string $message = 'Ocorreu um erro.', int $status = 400, $errors = null)
+    {
+        return response()->json([
+            'message' => $message,
+            'errors' => $errors
+        ], $status);
+    }
 }

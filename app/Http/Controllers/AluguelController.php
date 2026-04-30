@@ -9,18 +9,25 @@ class AluguelController extends Controller
 {
     public function index()
     {
-        $alugueis = Aluguel::all();
-        return response()->json($alugueis);
+        $alugueis = Aluguel::with(['user', 'livro'])->get();
+        return $this->success($alugueis, 'Alugueis listados com sucesso!');
+    }
+
+    public function show(Aluguel $aluguel)
+    {
+        $aluguel->load(['user', 'livro']);
+
+        return $this->success($aluguel, 'Aluguel encontrado com sucesso!');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer|min:0',
-            'livro_id' => 'required|integer|min:0',
+            'user_id' => 'required|integer|exists:users,id',
+            'livro_id' => 'required|integer|exists:livros,id',
             'data_aluguel' => 'required|date',
-            'data_devolucao_prevista' => 'required|date',
-            'data_devolucao_real' => 'required|date',
+            'data_devolucao_prevista' => 'required|date|after_or_equal:data_aluguel',
+            'data_devolucao_real' => 'nullable|date|after_or_equal:data_aluguel',
         ]);
         $alugueis = Aluguel::create($data);
         return $this->success($alugueis, 'Aluguel cadastrado com sucesso!', 201);
@@ -29,13 +36,13 @@ class AluguelController extends Controller
     public function  update(Request $request, Aluguel $alugueis)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer|min:1',
-            'livro_id' => 'required|integer|min:1',
+            'user_id' => 'required|integer|exists:users,id',
+            'livro_id' => 'required|integer|exists:livros,id',
             'data_aluguel' => 'required|date',
-            'data_devolucao_prevista' => 'required|date',
-            'data_devolucao_real' => 'required|date',
+            'data_devolucao_prevista' => 'required|date|after_or_equal:data_aluguel',
+            'data_devolucao_real' => 'nullable|date|after_or_equal:data_aluguel',
         ]);
-        $alugueis = Aluguel::update($data);
+        $alugueis->update($data);
         return $this->success($alugueis, 'Aluguel alterado com sucesso!');
     }
 
