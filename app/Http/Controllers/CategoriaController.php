@@ -23,7 +23,7 @@ class CategoriaController extends Controller
     {
         $data = $request->validate([
             'nome' => 'required|string|max:150',
-            'descricao' => 'required|string|max:255',
+            'descricao' => 'nullable|string|max:255',
         ]);
         $categoria = Categoria::create($data);
         return $this->success($categoria, 'Categoria cadastrada com sucesso!', 201);
@@ -33,7 +33,7 @@ class CategoriaController extends Controller
     {
         $data = $request->validate([
             'nome' => 'required|string|max:150',
-            'descricao' => 'required|string|max:255',
+            'descricao' => 'nullable|string|max:255',
         ]);
         $categoria->update($data);
         return $this->success($categoria, 'Categoria alterada com sucesso!');
